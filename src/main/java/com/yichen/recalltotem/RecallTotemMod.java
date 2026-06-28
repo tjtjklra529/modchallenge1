@@ -56,6 +56,13 @@ public class RecallTotemMod implements ModInitializer {
                         player.sendMessage(Text.literal("That anchor's dimension no longer exists."), false);
                         return;
                     }
+                    if (net.minecraft.world.World.END.equals(key)) {
+                        ServerWorld endWorld = server.getWorld(net.minecraft.world.World.END);
+                        if (endWorld != null && endWorld.getEnderDragonFight() != null && !endWorld.getEnderDragonFight().hasPreviouslyKilled()) {
+                            player.sendMessage(Text.literal("You must defeat the Ender Dragon before recalling to The End."), false);
+                            return;
+                        }
+                    }
                     player.teleport(world, entry.blockX + 0.5, entry.blockY + 1.0, entry.blockZ + 0.5, player.getYaw(), player.getPitch());
                     player.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1.0f, 1.0f);
                     player.sendMessage(Text.literal("Recalled to \"" + entry.name + "\"."), false);

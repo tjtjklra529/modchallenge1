@@ -92,15 +92,19 @@ public class RecallAnchorBlock extends Block {
             world.setBlockState(pos, state.with(LOADED, true));
 
             // Give Recall Button only if player doesn't already have one
+            boolean givenButton = false;
             if (!player.getInventory().containsAny(stack -> stack.isOf(ModItems.RECALL_BUTTON))) {
                 ItemStack button = new ItemStack(ModItems.RECALL_BUTTON);
                 if (!player.getInventory().insertStack(button)) {
                     player.dropItem(button, false);
                 }
+                givenButton = true;
             }
 
             world.playSound(null, pos, SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.BLOCKS, 1.0f, 1.0f);
-            serverPlayer.sendMessage(Text.literal("Recall Anchor loaded as \"" + name + "\". You received a Recall Button!"), false);
+            String msg = "Recall Anchor loaded as \"" + name + "\".";
+            if (givenButton) msg += " You received a Recall Button!";
+            serverPlayer.sendMessage(Text.literal(msg), false);
             return ActionResult.SUCCESS;
         }
 
