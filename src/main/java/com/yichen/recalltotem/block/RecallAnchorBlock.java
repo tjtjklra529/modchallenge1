@@ -9,6 +9,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -20,8 +22,16 @@ import java.util.List;
 
 public class RecallAnchorBlock extends Block {
 
+    public static final BooleanProperty ACTIVATED = BooleanProperty.of("activated");
+
     public RecallAnchorBlock(Settings settings) {
         super(settings);
+        setDefaultState(getStateManager().getDefaultState().with(ACTIVATED, false));
+    }
+
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(ACTIVATED);
     }
 
     @Override
@@ -65,6 +75,7 @@ public class RecallAnchorBlock extends Block {
         }
 
         AnchorUtil.setPlayerAnchor(serverPlayer, pos, serverPlayer.getServerWorld());
+        world.setBlockState(pos, state.with(ACTIVATED, true));
         world.playSound(null, pos, SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.BLOCKS, 1.0f, 1.0f);
         serverPlayer.sendMessage(Text.literal("Recall Anchor set."), false);
 
