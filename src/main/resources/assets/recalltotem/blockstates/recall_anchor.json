@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "recalltotem:block/recall_anchor" }
+  }
+}
