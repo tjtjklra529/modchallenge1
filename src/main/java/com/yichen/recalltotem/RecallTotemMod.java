@@ -72,7 +72,14 @@ public class RecallTotemMod implements ModInitializer {
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
             try {
                 if (handler.getPlayer() instanceof ServerPlayerEntity) {
-                    BookManager.giveHelpBookIfNeeded((ServerPlayerEntity) handler.getPlayer());
+                    ServerPlayerEntity sp = (ServerPlayerEntity) handler.getPlayer();
+                    BookManager.giveHelpBookIfNeeded(sp);
+                    server.execute(() -> {
+                        var recipes = server.getRecipeManager().values().stream()
+                            .filter(r -> r.getId().getNamespace().equals("recalltotem"))
+                            .toList();
+                        sp.unlockRecipes(recipes);
+                    });
                 }
             } catch (Exception e) {
                 LOGGER.warn("Error giving help book on join", e);
