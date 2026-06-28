@@ -17,7 +17,7 @@ public final class ModBlocks {
                 .mapColor(MapColor.IRON_GRAY)
                 .strength(1.5f)
                 .sounds(BlockSoundGroup.METAL)
-                .luminance(state -> state.get(RecallAnchorBlock.ACTIVATED) ? 9 : 6)
+                .luminance(state -> state.get(RecallAnchorBlock.LOADED) ? 9 : 6)
         );
         Registry.register(Registries.BLOCK, new Identifier("recalltotem", "recall_anchor"), RECALL_ANCHOR);
     }

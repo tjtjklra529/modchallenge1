@@ -8,7 +8,8 @@
   "license": "MIT",
   "environment": "*",
   "entrypoints": {
-    "main": ["com.yichen.recalltotem.RecallTotemMod"]
+    "main": ["com.yichen.recalltotem.RecallTotemMod"],
+    "client": ["com.yichen.recalltotem.RecallTotemModClient"]
   },
   "depends": {
     "fabricloader": ">=0.14.0",

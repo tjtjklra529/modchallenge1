@@ -7,16 +7,27 @@ import com.yichen.recalltotem.config.ModConfig;
 import com.yichen.recalltotem.item.ModItems;
 import com.yichen.recalltotem.roles.LuckPermsRoleAdapter;
 import com.yichen.recalltotem.roles.RoleProviders;
+import com.yichen.recalltotem.util.AnchorStore;
 import com.yichen.recalltotem.web.WebExportHandler;
 import com.yichen.recalltotem.web.WebhookResendHandler;
 import com.yichen.recalltotem.web.WebhookRetryScheduler;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Files;
+import java.util.List;
 
 public class RecallTotemMod implements ModInitializer {
     public static final String MOD_ID = "recalltotem";
@@ -26,9 +37,31 @@ public class RecallTotemMod implements ModInitializer {
     public void onInitialize() {
         LOGGER.info("Initializing Recall Totem mod");
         ModConfig.loadOrCreateDefault();
+        ModScreenHandlers.register();
         ModBlocks.registerModBlocks();
         ModItems.registerModItems();
         RecallCommands.register();
+
+        ServerPlayNetworking.registerGlobalReceiver(
+            new Identifier("recalltotem", "recall_select"),
+            (server, player, handler, buf, responseSender) -> {
+                int index = buf.readInt();
+                server.execute(() -> {
+                    List<AnchorStore.AnchorEntry> anchors = AnchorStore.getAnchors(player.getUuid());
+                    if (index < 0 || index >= anchors.size()) return;
+                    AnchorStore.AnchorEntry entry = anchors.get(index);
+                    RegistryKey<net.minecraft.world.World> key = RegistryKey.of(RegistryKeys.WORLD, new Identifier(entry.dimension));
+                    ServerWorld world = server.getWorld(key);
+                    if (world == null) {
+                        player.sendMessage(Text.literal("That anchor's dimension no longer exists."), false);
+                        return;
+                    }
+                    player.teleport(world, entry.blockX + 0.5, entry.blockY + 1.0, entry.blockZ + 0.5, player.getYaw(), player.getPitch());
+                    player.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                    player.sendMessage(Text.literal("Recalled to \"" + entry.name + "\"."), false);
+                });
+            }
+        );
 
         try {
             Files.createDirectories(ModConfig.getConfigDir().resolve("logs"));

@@ -1,6 +1,6 @@
 {
   "variants": {
-    "activated=false": { "model": "recalltotem:block/recall_anchor" },
-    "activated=true":  { "model": "recalltotem:block/recall_anchor_activated" }
+    "loaded=false": { "model": "recalltotem:block/recall_anchor" },
+    "loaded=true":  { "model": "recalltotem:block/recall_anchor_activated" }
   }
 }
