@@ -91,10 +91,12 @@ public class RecallAnchorBlock extends Block {
             // Switch to loaded texture
             world.setBlockState(pos, state.with(LOADED, true));
 
-            // Give player a Recall Button
-            ItemStack button = new ItemStack(ModItems.RECALL_BUTTON);
-            if (!player.getInventory().insertStack(button)) {
-                player.dropItem(button, false);
+            // Give Recall Button only if player doesn't already have one
+            if (!player.getInventory().containsAny(stack -> stack.isOf(ModItems.RECALL_BUTTON))) {
+                ItemStack button = new ItemStack(ModItems.RECALL_BUTTON);
+                if (!player.getInventory().insertStack(button)) {
+                    player.dropItem(button, false);
+                }
             }
 
             world.playSound(null, pos, SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.BLOCKS, 1.0f, 1.0f);

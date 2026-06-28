@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BGB",
+    "BEB",
+    "BAB"
+  ],
+  "key": {
+    "B": { "item": "minecraft:blackstone" },
+    "G": { "item": "minecraft:gold_ingot" },
+    "E": { "item": "minecraft:ender_pearl" },
+    "A": { "item": "recalltotem:recall_anchor" }
+  },
+  "result": {
+    "item": "recalltotem:recall_button",
+    "count": 1
+  }
+}
