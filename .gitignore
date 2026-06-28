@@ -1,0 +1,28 @@
+# Gradle
+.gradle/
+build/
+
+# IntelliJ
+.idea/
+*.iml
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# VSCode
+.vscode/
+
+# Minecraft / Fabric
+run/
+out/
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Config
+config/recalltotem/*.json

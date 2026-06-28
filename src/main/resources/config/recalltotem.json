@@ -1,0 +1,18 @@
+{
+  "protected_regions": [],
+  "protect_spawn_from_anchors": true,
+  "protected_spawn_radius_blocks": 64,
+  "enable_web_export": false,
+  "web_export_port": 8123,
+  "web_export_token": "",
+  "allow_region_claiming": true,
+  "enable_webhooks": false,
+  "webhook_url": "",
+  "webhook_secret_header": "",
+  "webhook_retries": 3,
+  "enable_web_dashboard": false,
+  "webhook_retry_enabled": true,
+  "webhook_retry_interval_seconds": 60,
+  "webhook_retry_max_attempts": 5,
+  "webhook_retry_backoff_multiplier": 2.0
+}
