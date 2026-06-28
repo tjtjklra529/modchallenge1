@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PCP",
+    "CGC",
+    "PCP"
+  ],
+  "key": {
+    "P": { "item": "minecraft:prismarine" },
+    "C": { "item": "minecraft:quartz" },
+    "G": { "item": "minecraft:glowstone" }
+  },
+  "result": {
+    "item": "recalltotem:recall_anchor",
+    "count": 1
+  }
+}
