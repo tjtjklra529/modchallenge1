@@ -15,9 +15,8 @@ public final class ModBlocks {
         RECALL_ANCHOR = new RecallAnchorBlock(
             AbstractBlock.Settings.create()
                 .mapColor(MapColor.IRON_GRAY)
-                .strength(3.5f)
+                .strength(1.5f)
                 .sounds(BlockSoundGroup.METAL)
-                .requiresTool()
         );
         Registry.register(Registries.BLOCK, new Identifier("recalltotem", "recall_anchor"), RECALL_ANCHOR);
     }
