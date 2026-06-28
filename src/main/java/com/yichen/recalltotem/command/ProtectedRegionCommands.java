@@ -62,7 +62,7 @@ public class ProtectedRegionCommands {
         ModConfig.get().protectedRegions.add(r);
         ModConfig.save();
         source.sendFeedback(() -> Text.literal("Added protected region at (" + x + "," + z + ") radius " + radius + " dim " + dimension), false);
-        String actor = source.getName().getString();
+        String actor = source.getName();
         AuditManager.log(actor, "region.add", "center=" + x + "," + z + " radius=" + radius + " dim=" + dimension);
         RecallTotemMod.LOGGER.info("Added protected region: " + x + "," + z + " r=" + radius + " dim=" + dimension);
         return 1;
@@ -80,7 +80,7 @@ public class ProtectedRegionCommands {
         ProtectedRegion removed = ModConfig.get().protectedRegions.remove(index);
         ModConfig.save();
         source.sendFeedback(() -> Text.literal("Removed protected region #" + index), false);
-        String actor = source.getName().getString();
+        String actor = source.getName();
         AuditManager.log(actor, "region.remove", "index=" + index + " center=" + removed.centerX + "," + removed.centerZ);
         return 1;
     }
@@ -93,9 +93,10 @@ public class ProtectedRegionCommands {
         }
         for (int i = 0; i < regions.size(); i++) {
             ProtectedRegion r = regions.get(i);
-            source.sendFeedback(() -> Text.literal("#" + i + ": center=(" + r.centerX + "," + r.centerZ + ") radius=" + r.radiusBlocks + " dim=" + r.dimension + (r.adminNote != null && !r.adminNote.isEmpty() ? " note=" + r.adminNote : "")), false);
+            int idx = i;
+            source.sendFeedback(() -> Text.literal("#" + idx + ": center=(" + r.centerX + "," + r.centerZ + ") radius=" + r.radiusBlocks + " dim=" + r.dimension + (r.adminNote != null && !r.adminNote.isEmpty() ? " note=" + r.adminNote : "")), false);
         }
-        String actor = source.getName().getString();
+        String actor = source.getName();
         AuditManager.log(actor, "region.list", "count=" + regions.size());
         return regions.size();
     }

@@ -47,7 +47,7 @@ public class RegionPreviewCommand {
         ServerPlayerEntity player = (ServerPlayerEntity) source.getEntity();
         RegionVisualizer.previewRegion(player, r);
         source.sendFeedback(() -> Text.literal("Previewing region #" + index), false);
-        String actor = source.getName().getString();
+        String actor = source.getName();
         AuditManager.log(actor, "region.preview", "index=" + index);
         return 1;
     }

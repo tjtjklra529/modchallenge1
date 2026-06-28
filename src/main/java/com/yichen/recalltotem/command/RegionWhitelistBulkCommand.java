@@ -52,7 +52,7 @@ public class RegionWhitelistBulkCommand {
                     source.sendError(Text.literal("Error: " + e));
                 }
             }
-            String actor = source.getName().getString();
+            String actor = source.getName();
             AuditManager.log(actor, "region.whitelist.bulk_dryrun", "path=" + pathStr + " errors=" + errors.size());
             return errors.isEmpty() ? 1 : 0;
         } catch (Exception e) {
@@ -70,7 +70,7 @@ public class RegionWhitelistBulkCommand {
         try {
             int count = WhitelistBulkTool.apply(Path.of(pathStr));
             source.sendFeedback(() -> Text.literal("Applied whitelist bulk import: " + count + " region(s)."), false);
-            String actor = source.getName().getString();
+            String actor = source.getName();
             AuditManager.log(actor, "region.whitelist.bulk_apply", "path=" + pathStr + " count=" + count);
             return count;
         } catch (Exception e) {

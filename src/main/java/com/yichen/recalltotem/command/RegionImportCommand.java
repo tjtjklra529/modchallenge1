@@ -53,7 +53,7 @@ public class RegionImportCommand {
             }
             ModConfig.save();
             source.sendFeedback(() -> Text.literal("Imported " + regions.length + " protected region(s)."), false);
-            String actor = source.getName().getString();
+            String actor = source.getName();
             AuditManager.log(actor, "region.import", "count=" + regions.length);
             RecallTotemMod.LOGGER.info("Imported " + regions.length + " protected regions via command.");
             return regions.length;
@@ -89,7 +89,7 @@ public class RegionImportCommand {
             }
             ModConfig.save();
             source.sendFeedback(() -> Text.literal("Imported " + regions.length + " protected region(s) from file."), false);
-            String actor = source.getName().getString();
+            String actor = source.getName();
             AuditManager.log(actor, "region.import_file", "path=" + pathStr + " count=" + regions.length);
             RecallTotemMod.LOGGER.info("Imported " + regions.length + " protected regions from file: " + pathStr);
             return regions.length;

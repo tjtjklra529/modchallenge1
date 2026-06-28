@@ -48,7 +48,7 @@ public class RegionExportCommand {
             if (path.getParent() != null) Files.createDirectories(path.getParent());
             Files.writeString(path, json, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
             source.sendFeedback(() -> Text.literal("Exported " + arr.length + " region(s) to " + path.toString()), false);
-            String actor = source.getName().getString();
+            String actor = source.getName();
             AuditManager.log(actor, "region.export", "path=" + path.toString() + " count=" + arr.length);
             RecallTotemMod.LOGGER.info("Exported protected regions to " + path.toString());
             return arr.length;

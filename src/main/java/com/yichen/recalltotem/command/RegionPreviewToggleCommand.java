@@ -34,7 +34,7 @@ public class RegionPreviewToggleCommand {
         }
         globalPreviewEnabled = !globalPreviewEnabled;
         source.sendFeedback(() -> Text.literal("Global preview " + (globalPreviewEnabled ? "enabled" : "disabled")), false);
-        String actor = source.getName().getString();
+        String actor = source.getName();
         AuditManager.log(actor, "region.preview.toggle", "enabled=" + globalPreviewEnabled);
         RecallTotemMod.LOGGER.info("Global preview toggled: " + globalPreviewEnabled);
         return 1;
@@ -42,7 +42,7 @@ public class RegionPreviewToggleCommand {
 
     private static int status(ServerCommandSource source) {
         source.sendFeedback(() -> Text.literal("Global preview is " + (globalPreviewEnabled ? "enabled" : "disabled")), false);
-        String actor = source.getName().getString();
+        String actor = source.getName();
         AuditManager.log(actor, "region.preview.status", "queried enabled=" + globalPreviewEnabled);
         return 1;
     }

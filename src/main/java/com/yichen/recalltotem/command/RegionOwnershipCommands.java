@@ -66,7 +66,7 @@ public class RegionOwnershipCommands {
         r.ownerUuid = player.getUuidAsString();
         ModConfig.save();
         source.sendFeedback(() -> Text.literal("You claimed region #" + index), false);
-        String actor = source.getName().getString();
+        String actor = source.getName();
         AuditManager.log(actor, "region.claim", "index=" + index + " owner=" + r.ownerUuid);
         return 1;
     }
@@ -92,7 +92,7 @@ public class RegionOwnershipCommands {
         r.ownerUuid = target.getUuidAsString();
         ModConfig.save();
         source.sendFeedback(() -> Text.literal("Transferred region #" + index + " to " + playerName), false);
-        String actor = source.getName().getString();
+        String actor = source.getName();
         AuditManager.log(actor, "region.transfer", "index=" + index + " to=" + target.getUuidAsString());
         return 1;
     }
@@ -111,7 +111,7 @@ public class RegionOwnershipCommands {
         r.ownerUuid = uuid;
         ModConfig.save();
         source.sendFeedback(() -> Text.literal("Set owner of region #" + index + " to " + uuid), false);
-        String actor = source.getName().getString();
+        String actor = source.getName();
         AuditManager.log(actor, "region.set_owner", "index=" + index + " owner=" + uuid);
         return 1;
     }

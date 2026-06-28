@@ -50,7 +50,8 @@ public class RegionAuditFilterCommand {
                 if (shown >= 200) break;
             }
         }
-        source.sendFeedback(() -> Text.literal("Shown " + shown + " matching audit entries."), false);
+        int finalShown = shown;
+        source.sendFeedback(() -> Text.literal("Shown " + finalShown + " matching audit entries."), false);
         return shown;
     }
 }

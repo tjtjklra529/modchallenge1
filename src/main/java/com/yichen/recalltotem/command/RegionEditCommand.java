@@ -63,7 +63,7 @@ public class RegionEditCommand {
             }
             ModConfig.save();
             source.sendFeedback(() -> Text.literal("Region #" + index + " updated (" + field + ")."), false);
-            String actor = source.getName().getString();
+            String actor = source.getName();
             AuditManager.log(actor, "region.edit", "index=" + index + " field=" + field + " from=\"" + oldVal + "\" to=\"" + value + "\"");
             RecallTotemMod.LOGGER.info("Region #" + index + " edited: " + field + "=" + value);
             return 1;

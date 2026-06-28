@@ -69,7 +69,7 @@ public class RegionWhitelistCommands {
         if (!r.whitelist.contains(uuid)) r.whitelist.add(uuid);
         ModConfig.save();
         source.sendFeedback(() -> Text.literal("Added to whitelist for region #" + index + ": " + uuid), false);
-        String actor = source.getName().getString();
+        String actor = source.getName();
         AuditManager.log(actor, "region.whitelist.add", "index=" + index + " uuid=" + uuid);
         WebhookNotifier.notify("region.whitelist.add", actor, java.util.Map.of("index", String.valueOf(index), "uuid", uuid));
         return 1;
@@ -94,7 +94,7 @@ public class RegionWhitelistCommands {
         if (r.whitelist.remove(uuid)) {
             ModConfig.save();
             source.sendFeedback(() -> Text.literal("Removed from whitelist for region #" + index + ": " + uuid), false);
-            String actor = source.getName().getString();
+            String actor = source.getName();
             AuditManager.log(actor, "region.whitelist.remove", "index=" + index + " uuid=" + uuid);
             WebhookNotifier.notify("region.whitelist.remove", actor, java.util.Map.of("index", String.valueOf(index), "uuid", uuid));
             return 1;
@@ -120,10 +120,11 @@ public class RegionWhitelistCommands {
             return 1;
         }
         for (String u : r.whitelist) {
-            String display = u;
-            var player = source.getServer().getPlayerManager().getPlayer(u);
-            if (player != null) display = player.getEntityName();
-            source.sendFeedback(() -> Text.literal(display + " (" + u + ")"), false);
+            var onlinePlayer = source.getServer().getPlayerManager().getPlayer(u);
+            String display = onlinePlayer != null ? onlinePlayer.getName().getString() : u;
+            String finalDisplay = display;
+            String finalU = u;
+            source.sendFeedback(() -> Text.literal(finalDisplay + " (" + finalU + ")"), false);
         }
         return r.whitelist.size();
     }

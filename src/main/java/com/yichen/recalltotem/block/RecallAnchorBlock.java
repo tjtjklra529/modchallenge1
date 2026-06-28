@@ -30,11 +30,9 @@ public class RecallAnchorBlock extends Block {
             return ActionResult.SUCCESS;
         }
 
-        if (!(player instanceof ServerPlayerEntity)) {
+        if (!(player instanceof ServerPlayerEntity serverPlayer)) {
             return ActionResult.PASS;
         }
-
-        ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
 
         if (ModConfig.get().protectSpawnFromAnchors) {
             BlockPos worldSpawn = serverPlayer.getServerWorld().getSpawnPos();
@@ -43,9 +41,7 @@ public class RecallAnchorBlock extends Block {
             double distSq = dx * dx + dz * dz;
             int protectedRadius = ModConfig.get().protectedSpawnRadiusBlocks;
             if (distSq <= (double) protectedRadius * protectedRadius) {
-                try {
-                    serverPlayer.sendMessage(Text.literal("You cannot set a Recall Anchor this close to world spawn."), false);
-                } catch (Exception ignored) {}
+                serverPlayer.sendMessage(Text.literal("You cannot set a Recall Anchor this close to world spawn."), false);
                 world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_LAND, SoundCategory.BLOCKS, 0.8f, 0.8f);
                 return ActionResult.FAIL;
             }
@@ -57,30 +53,20 @@ public class RecallAnchorBlock extends Block {
             for (ProtectedRegion r : regions) {
                 if (r == null) continue;
                 if (!r.contains(pos.getX(), pos.getZ(), dim)) continue;
-                if (!r.isActiveNow()) {
-                    continue;
-                }
-                if (r.whitelist != null && r.whitelist.contains(serverPlayer.getUuidAsString())) {
-                    continue;
-                }
-                try {
-                    if (r.denyMessage != null && !r.denyMessage.isEmpty()) {
-                        serverPlayer.sendMessage(Text.literal(r.denyMessage), false);
-                    } else {
-                        serverPlayer.sendMessage(Text.literal("You cannot set a Recall Anchor inside a protected region."), false);
-                    }
-                } catch (Exception ignored) {}
+                if (!r.isActiveNow()) continue;
+                if (r.whitelist != null && r.whitelist.contains(serverPlayer.getUuidAsString())) continue;
+                String msg = (r.denyMessage != null && !r.denyMessage.isEmpty())
+                    ? r.denyMessage
+                    : "You cannot set a Recall Anchor inside a protected region.";
+                serverPlayer.sendMessage(Text.literal(msg), false);
                 world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_LAND, SoundCategory.BLOCKS, 0.8f, 0.8f);
                 return ActionResult.FAIL;
             }
         }
 
         AnchorUtil.setPlayerAnchor(serverPlayer, pos, serverPlayer.getServerWorld());
-
         world.playSound(null, pos, SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.BLOCKS, 1.0f, 1.0f);
-        try {
-            serverPlayer.sendMessage(Text.literal("Recall Anchor set."), false);
-        } catch (Exception ignored) {}
+        serverPlayer.sendMessage(Text.literal("Recall Anchor set."), false);
 
         return ActionResult.CONSUME;
     }

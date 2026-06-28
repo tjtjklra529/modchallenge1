@@ -96,7 +96,7 @@ public class RegionScheduleCommand {
         r.schedules.add(s);
         ModConfig.save();
         source.sendFeedback(() -> Text.literal("Added schedule to region #" + index + ": " + startIso + " -> " + endIso), false);
-        String actor = source.getName().getString();
+        String actor = source.getName();
         AuditManager.log(actor, "region.schedule.add", "index=" + index + " start=" + startIso + " end=" + endIso);
         RecallTotemMod.LOGGER.info("Added schedule to region #" + index + " " + startIso + " -> " + endIso);
         return 1;
@@ -120,7 +120,7 @@ public class RegionScheduleCommand {
         r.schedules.remove(schedIndex);
         ModConfig.save();
         source.sendFeedback(() -> Text.literal("Removed schedule #" + schedIndex + " from region #" + index), false);
-        String actor = source.getName().getString();
+        String actor = source.getName();
         AuditManager.log(actor, "region.schedule.remove", "index=" + index + " schedIndex=" + schedIndex);
         return 1;
     }
@@ -143,9 +143,10 @@ public class RegionScheduleCommand {
         }
         for (int i = 0; i < schedules.size(); i++) {
             ProtectedRegion.ScheduleWindow sw = schedules.get(i);
-            source.sendFeedback(() -> Text.literal("#" + i + ": " + sw.startIso + " -> " + sw.endIso), false);
+            int idx = i;
+            source.sendFeedback(() -> Text.literal("#" + idx + ": " + sw.startIso + " -> " + sw.endIso), false);
         }
-        String actor = source.getName().getString();
+        String actor = source.getName();
         AuditManager.log(actor, "region.schedule.list", "index=" + index + " count=" + schedules.size());
         return schedules.size();
     }
@@ -163,7 +164,7 @@ public class RegionScheduleCommand {
                 return 0;
             }
             source.sendFeedback(() -> Text.literal("Schedule is valid: " + startIso + " -> " + endIso), false);
-            String actor = source.getName().getString();
+            String actor = source.getName();
             AuditManager.log(actor, "region.schedule.validate", "start=" + startIso + " end=" + endIso);
             return 1;
         } catch (DateTimeParseException e) {
