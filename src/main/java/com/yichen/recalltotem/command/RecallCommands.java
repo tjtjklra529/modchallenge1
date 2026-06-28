@@ -2,6 +2,7 @@ package com.yichen.recalltotem.command;
 
 public final class RecallCommands {
     public static void register() {
+        RecallTeleportCommand.register();
         ProtectedRegionCommands.register();
         RegionEditCommand.register();
         RegionImportCommand.register();
