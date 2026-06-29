@@ -12,9 +12,11 @@ import com.yichen.recalltotem.web.WebExportHandler;
 import com.yichen.recalltotem.web.WebhookResendHandler;
 import com.yichen.recalltotem.web.WebhookRetryScheduler;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.util.WorldSavePath;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -37,6 +39,14 @@ public class RecallTotemMod implements ModInitializer {
     public void onInitialize() {
         LOGGER.info("Initializing Recall Totem mod");
         ModConfig.loadOrCreateDefault();
+
+        ServerLifecycleEvents.SERVER_STARTING.register(server -> {
+            AnchorStore.setWorldDir(server.getSavePath(WorldSavePath.ROOT).toAbsolutePath());
+        });
+        ServerLifecycleEvents.SERVER_STOPPED.register(server -> {
+            AnchorStore.clearWorldDir();
+        });
+
         ModScreenHandlers.register();
         ModBlocks.registerModBlocks();
         ModItems.registerModItems();

@@ -22,8 +22,19 @@ public final class AnchorStore {
         public String dimension;
     }
 
+    private static Path worldDir = null;
+
+    public static void setWorldDir(Path dir) {
+        worldDir = dir;
+    }
+
+    public static void clearWorldDir() {
+        worldDir = null;
+    }
+
     private static Path dataFile() {
-        return ModConfig.getConfigDir().resolve("anchors.json");
+        Path base = worldDir != null ? worldDir : ModConfig.getConfigDir();
+        return base.resolve("recalltotem_anchors.json");
     }
 
     private static Map<String, List<AnchorEntry>> loadAll() {
